@@ -11,7 +11,7 @@ Este repositorio cuenta con:
 # Como usar keyExtract.py
 * Ejecutar <code>python keyExtract.py</code> y esperar a que se generen los archivos de llaves detectadas.
 
-# Como usar JKeyVaultTools
+# Como usar JKeyVaultTools.java
 * Elegir el IDE Java de tu preferencia (Netbeans en mi caso)
 * Crear un nuevo proyecto y copiar el contenido del archivo JKeyVaultTools.java (modificar el nombre de la clase principal)
 * Ejecutar y esperar la generación de archivos correspondientes.
