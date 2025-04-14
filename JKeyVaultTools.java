@@ -3,7 +3,9 @@ package jkeyvault;
 /**
  *
  * @author Slam 
- * Código basado en los script de python del repositorio.
+ * 
+ * Código basado en los script de python del repositorio
+ *
  */
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -16,6 +18,7 @@ import java.security.InvalidKeyException;
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
+import java.security.spec.InvalidKeySpecException;
 import java.security.spec.RSAPublicKeySpec;
 import javax.crypto.Cipher;
 import javax.crypto.Mac;
@@ -194,15 +197,24 @@ public class DecryptKV {
 
             return publicKey;
 
-        } catch (Exception e) {
+        } catch (IOException | NoSuchAlgorithmException | InvalidKeySpecException e) {
             System.out.println("Error al procesar " + keyName + ": " + e.getMessage());
             return null;
         }
     }
 
+    // crear directorio para las claves extraidas
+    public static File createDir(String dirPath) {
+        File dirClaves = new File(dirPath, "claves");
+        if (!dirClaves.exists()) {
+            System.out.println(dirClaves.mkdir() ? ("Directorio \"" + dirClaves.getAbsolutePath() + "\" creado!") : ("No se pudo crear directorio: \"" + dirClaves.getAbsolutePath() + "\"!"));
+        }
+        return dirClaves;
+    }
+
     public static void main(String[] args) throws Exception {
         // Ruta al directorio de la keyvault_enc.bin (cambiar o eliminar si es necesario)
-        JFileChooser jfc = new JFileChooser("C:\\J-Runner-with-Extras\\output");
+        JFileChooser jfc = new JFileChooser("C:\\J-Runner-with-extras\\output");
         // Filtro para extensiones (agiliza la búsqueda del binario)
         jfc.setFileFilter(new FileNameExtensionFilter("Binario de KeyVault ", "bin"));
         // Muestra la ventana de explorador para elegir el binario
@@ -221,14 +233,11 @@ public class DecryptKV {
 
             /*Fase 2 - Extraer llaves públicas*/
             // crea un directorio claves donde se encuentra el keyvault
-            System.out.println("Creando directorio para las claves...");
-            String dirPath = kv_bin.getParent();
-            File tpemDir = new File(dirPath, "claves");
-            if (!tpemDir.exists()) {
-                System.out.println(tpemDir.mkdir() ? ("Directorio \"" + tpemDir.getAbsolutePath()+ "\" creado!") : ("No se pudo crear directorio: \"" + tpemDir.getAbsolutePath()+ "\"!"));
-            }
+            System.out.println("Creando directorio para las claves...");            
+            File clavesDir = createDir(kv_bin.getParent());    
+            
             // escribe las claves públicas en formato PEM al directorio claves
-            processKeyVault(decryptedKV, tpemDir.getAbsolutePath());
+            processKeyVault(decryptedKV, clavesDir.getAbsolutePath());
 
         } else {
             System.err.println("Error: Binario nulo o vacio!");
