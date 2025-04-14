@@ -3,6 +3,7 @@ Este repositorio cuenta con:
 - Script para des-encriptar KeyVault extraído de una nand para Xbox 360.
 - Script para extraer llaves públicas en el KeyVault.
 - Código Java para des-encriptar y extraer llaves públicas del KeyVault extraído de una nand para Xbox 360.
+- Extractos de información recabada del exploit BadUpdate.
 
 # Como usar decryptKv.py
 * Editar el .py e ingresar la CPU-KEY
